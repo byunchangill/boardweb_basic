@@ -88,13 +88,12 @@ public class BoardDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT A.iboard, A.title, A.writer, A.hit, A.rdt, B.nm as writerNm B.profileImg " +
+        String sql = "SELECT A.iboard, A.title, A.writer, A.hit, A.rdt, B.nm as writerNm, B.profileImg " +
                 " FROM t_board A " +
                 " INNER JOIN t_user B " +
                 " ON A.writer = B.iuser ";
         sql += getSearchWhereString(param);
         sql += " ORDER BY A.iboard DESC LIMIT ?, ? ";
-
 
         try {
             con = DbUtils.getCon();
