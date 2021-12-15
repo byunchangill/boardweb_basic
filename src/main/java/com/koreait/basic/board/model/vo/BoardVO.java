@@ -13,7 +13,7 @@ public class BoardVO {
     private int hit;
     private String rdt;
     private String mdt;
-
+    private String profileImg;
     private String writerNm;
     private int cnt;
 }
