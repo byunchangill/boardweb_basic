@@ -1,0 +1,4 @@
+#boardTable tr:not(:first-child):hover { background-color: #efefef; cursor: pointer; }
+.selected {color: chocolate; font-weight: bold;}
+.pageContainer {display: flex; padding: 10px 50px; justify-content: center;}
+.pageContainer span:not(:first-child) {margin-left: 8px;}
