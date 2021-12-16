@@ -28,7 +28,6 @@
         <div>글이 없습니다.</div>
     </c:when>
    <c:otherwise>
-
        <div>
            <table id="boardTable">
                <colgroup>

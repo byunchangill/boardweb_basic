@@ -69,13 +69,12 @@ public class UserDAO {
         }
         return new LoginResult(result, loginUser);
     }
-
-    public static UserEntity selUser(UserEntity entity) {
+    /*
+        public static UserEntity selUser(UserEntity entity) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         String sql = " SELECT uid, nm, gender, rdt, profileImg FROM t_user WHERE iuser = ? ";
-
         try {
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
@@ -85,8 +84,42 @@ public class UserDAO {
                 UserEntity vo = new UserEntity();
                 vo.setUid(rs.getString("uid"));
                 vo.setNm(rs.getString("nm"));
-                vo.setRdt(rs.getString("rdt"));
                 vo.setGender(rs.getInt("gender"));
+                vo.setRdt(rs.getString("rdt"));
+                vo.setProfileImg(rs.getString("profileImg"));
+                return vo;
+            }
+        } catch (Exception e) { e.printStackTrace();
+        } finally { DbUtils.close(con, ps, rs); }
+        return null;
+    }
+     */
+
+    public static UserEntity selUser(UserEntity entity) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT iuser, uid, upw, nm, gender, rdt, profileImg FROM t_user WHERE ";
+
+        if(entity.getIuser() > 0) {
+            sql += "iuser = " + entity.getIuser();
+        } else {
+            sql += "uid = '" + entity.getUid() + "'";
+        }
+
+        try {
+            con = DbUtils.getCon();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if(rs.next()) {
+                UserEntity vo = new UserEntity();
+                vo.setIuser(rs.getInt("iuser"));
+                vo.setUid(rs.getString("uid"));
+                vo.setUpw(rs.getString("upw"));
+                vo.setNm(rs.getString("nm"));
+                vo.setGender(rs.getInt("gender"));
+                vo.setRdt(rs.getString("rdt"));
                 vo.setProfileImg(rs.getString("profileImg"));
                 return vo;
             }

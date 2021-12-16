@@ -28,8 +28,7 @@
     <div>조회수: <c:out value="${requestScope.data.hit}"/></div>
     <div>작성자(이름): <c:out value="${requestScope.data.writerNm}"/></div>
     <div>등록일시: <c:out value="${requestScope.data.rdt}"/></div>
-    <div>좋아요 개수 :    </div>
-
+    <div>좋아요 개수 : ${requestScope.data.cnt}</div>
 
     <c:if test="${sessionScope.loginUser != null}">
         <div>
