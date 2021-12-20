@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/board/detail")
-public class BoardDetailServlet extends HttpServlet {
+@WebServlet("/board/detail2")
+public class BoardDetailServlet2 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         int nohits = Utils.getParameterInt(req, "nohits");
@@ -27,10 +27,6 @@ public class BoardDetailServlet extends HttpServlet {
 
         BoardVO data = BoardDAO.selBoardDetail(dto);
         req.setAttribute("data", data);
-
-        BoardCmtDTO param = new BoardCmtDTO();
-        param.setIbaord(iboard);
-        req.setAttribute("cmtList", BoardCmtDAO.selBoardCmtList(param));
 
         int loginUserPk = Utils.getLoginUserPk(req);
         if(loginUserPk > 0) {
@@ -44,7 +40,7 @@ public class BoardDetailServlet extends HttpServlet {
             BoardDAO.updBoardHitUp(dto);
         }
 
-        Utils.displayView(req, res, data.getTitle(), "/board/detail");
+        Utils.displayView(req, res, data.getTitle(), "/board/detail2");
     }
 
     @Override
