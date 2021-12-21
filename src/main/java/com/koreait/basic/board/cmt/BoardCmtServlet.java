@@ -3,6 +3,7 @@ package com.koreait.basic.board.cmt;
 import com.google.gson.Gson;
 import com.koreait.basic.Utils;
 import com.koreait.basic.board.model.dto.BoardCmtDTO;
+import com.koreait.basic.board.model.entity.BoardCmtEntity;
 import com.koreait.basic.board.model.vo.BoardCmtVO;
 import com.koreait.basic.dao.BoardCmtDAO;
 
@@ -40,5 +41,21 @@ public class BoardCmtServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         // 등록(C), 수정(U), 삭제(D)
+        String  proc = req.getParameter("proc");
+
+        String json = Utils.getJson(req);
+        Gson gson = new Gson();
+        BoardCmtEntity entity = gson.fromJson(json, BoardCmtEntity.class);
+        entity.setWriter(Utils.getLoginUserPk(req));
+
+        int result = 0;
+        switch (proc) {
+            case "upd":
+                result = BoardCmtDAO.upBoardCmt(entity); // writer, icmt, ctnt 값이 들어가 있다.
+                break;
+        }
+        res.setContentType("application/json");
+        PrintWriter out = res.getWriter();
+        out.print(String.format("{\"result\": %d}", result));
     }
 }

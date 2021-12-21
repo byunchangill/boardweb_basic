@@ -5,15 +5,57 @@ var cmtModContainerElem = document.querySelector('.cmtModContainer');
 var btnCancelElem = cmtModContainerElem.querySelector('#btnCancel');
     btnCancelElem.addEventListener('click', function () {
     cmtModContainerElem.style.display = 'none';
+    var selectedElem = document.querySelector('.cmt_selected');
+    selectedElem.classList.remove('cmt_selected');
+
 });
 // 댓글 수정 버튼 클릭 이벤트 연결.
-function openModForm({icmt, ctnt}) { // 구조 분할 할당( { } ) 사용.
+var cmtModFormElem = cmtModContainerElem.querySelector('#cmtModForm');
+var submitBtnElem = cmtModContainerElem.querySelector('input[type = submit]');
+submitBtnElem.addEventListener('click', function (e) {
+    e.preventDefault();
+    var url = '/board/cmt?proc=upd';
+    var param = {
+        'icmt': cmtModFormElem.icmt.value,
+        'ctnt': cmtModFormElem.ctnt.value
+    };
+    fetch(url, {
+        'method': 'POST',
+        'headers': {
+            'Content-Type': 'application/json'
+        },
+        'body': JSON.stringify(param)
+    }).then(function (res) {
+        return res.json();
+    }).then(function (data) {
+        console.log(data.result);
+        switch (data.result) {
+            case 0: // 수정 실패
+                alert('댓글 수정에 실패하였습니다.')
+                break;
+            case 1: // 수정 성공
+                modCtnt(param.ctnt);
+                var e = new Event('click');
+                btnCancelElem.dispatchEvent(e);
+                // btnCancelElem.dispatchEvent(new Event('click'));
+                break;
+        }
+    }).catch(function (err) {
+        console.log(err);
+    });
+});
+
+function openModForm(icmt, ctnt) {
     cmtModContainerElem.style.display = 'flex';
-    var cmtModFormElem = cmtModContainerElem.querySelector('#cmtModForm');
     cmtModFormElem.icmt.value = icmt;
     cmtModFormElem.ctnt.value = ctnt;
 }
 
+function modCtnt(ctnt) {
+    var selectedElem = document.querySelector('.cmt_selected');
+    var tdCtntElem = selectedElem.children[0];
+    tdCtntElem.innerText = ctnt;
+}
 
 if(cmtListContainerElem) { // ajax 용.
     function getList() {
@@ -43,7 +85,6 @@ if(cmtListContainerElem) { // ajax 용.
 
         var loginUserPk = cmtListContainerElem.dataset.loginuserpk === '' ? 0 : Number(cmtListContainerElem.dataset.loginuserpk);
 
-
         data.forEach(function (item) {
            var tr = document.createElement('tr');
            var ctnt = item.ctnt.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
@@ -55,20 +96,22 @@ if(cmtListContainerElem) { // ajax 용.
                `;
                 tableElem.appendChild(tr);
 
-            var lastTd = document.createElement('td');
-            tr.appendChild(lastTd);
+                var lastTd = document.createElement('td');
+                tr.appendChild(lastTd);
 
-            if(loginUserPk === item.writer) {
-              var btnMod = document.createElement('button');
-              btnMod.innerText = '수정';
-              btnMod.addEventListener('click', function () {
-                  openModForm(item);
-              });
-              var btnDel = document.createElement('button');
-              btnDel.innerText = '삭제';
-              lastTd.appendChild(btnMod);
-              lastTd.appendChild(btnDel);
-            }
+                if(loginUserPk === item.writer) {
+                    var btnMod = document.createElement('button');
+                    btnMod.innerText = '수정';
+                    btnMod.addEventListener('click', function () {
+                        tr.classList.add('cmt_selected'); // 클래스 추가해준다.
+                        var ctnt = tr.children[0].innerText;
+                        openModForm(item.icmt, ctnt);
+                    });
+                    var btnDel = document.createElement('button');
+                    btnDel.innerText = '삭제';
+                    lastTd.appendChild(btnMod);
+                    lastTd.appendChild(btnDel);
+                }
         });
     }
     getList();
