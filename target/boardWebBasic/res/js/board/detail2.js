@@ -1,17 +1,19 @@
 var cmtListContainerElem = document.querySelector('#cmtListContainer');
-/*
-function getList() { // ajax 용.
-    var url = '/board/cmt?ibaord=' + cmtListContainerElem.dataset.iboard;
-    fetch(url).then(function (res) {
-        return res.json();
-    }).then(function (data) {
-        console.log(data);
-    }).catch(function (err) {
-        console.error(err);
-    });
+var cmtModContainerElem = document.querySelector('.cmtModContainer');
+
+// 댓글 수정 취소 버튼 클릭 이벤트 연결.
+var btnCancelElem = cmtModContainerElem.querySelector('#btnCancel');
+    btnCancelElem.addEventListener('click', function () {
+    cmtModContainerElem.style.display = 'none';
+});
+// 댓글 수정 버튼 클릭 이벤트 연결.
+function openModForm({icmt, ctnt}) { // 구조 분할 할당( { } ) 사용.
+    cmtModContainerElem.style.display = 'flex';
+    var cmtModFormElem = cmtModContainerElem.querySelector('#cmtModForm');
+    cmtModFormElem.icmt.value = icmt;
+    cmtModFormElem.ctnt.value = ctnt;
 }
-getList();
- */
+
 
 if(cmtListContainerElem) { // ajax 용.
     function getList() {
@@ -39,6 +41,9 @@ if(cmtListContainerElem) { // ajax 용.
             </tr>`; // 탬플릿 리터널. 홑따옴표로 감싼다.
         cmtListContainerElem.appendChild(tableElem);
 
+        var loginUserPk = cmtListContainerElem.dataset.loginuserpk === '' ? 0 : Number(cmtListContainerElem.dataset.loginuserpk);
+
+
         data.forEach(function (item) {
            var tr = document.createElement('tr');
            var ctnt = item.ctnt.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
@@ -50,15 +55,20 @@ if(cmtListContainerElem) { // ajax 용.
                `;
                 tableElem.appendChild(tr);
 
-                var lastTd = document.createElement('td');
-                var btnMod = document.createElement('button');
-                btnMod.innerText = '수정';
-                var btnDel = document.createElement('button');
-                btnDel.innerText = '삭제';
+            var lastTd = document.createElement('td');
+            tr.appendChild(lastTd);
 
-                lastTd.appendChild(btnMod);
-                lastTd.appendChild(btnDel);
-                tr.appendChild(lastTd);
+            if(loginUserPk === item.writer) {
+              var btnMod = document.createElement('button');
+              btnMod.innerText = '수정';
+              btnMod.addEventListener('click', function () {
+                  openModForm(item);
+              });
+              var btnDel = document.createElement('button');
+              btnDel.innerText = '삭제';
+              lastTd.appendChild(btnMod);
+              lastTd.appendChild(btnDel);
+            }
         });
     }
     getList();

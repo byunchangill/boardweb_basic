@@ -38,7 +38,8 @@
         </form>
         </div>
     </c:if>
-    <div id="cmtListContainer" data-iboard="${requestScope.data.iboard}"></div> <!-- ajax 용. -->
+    <div id="cmtListContainer" data-iboard="${requestScope.data.iboard}"
+                               data-loginuserpk="${sessionScope.loginUser.iuser}"></div> <!-- ajax 용. -->
 </div>
 <div class="cmtModContainer">
     <div class="cmtModBody">
