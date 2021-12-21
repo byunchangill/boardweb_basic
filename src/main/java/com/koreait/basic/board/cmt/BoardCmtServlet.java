@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/board/cmt")
+@WebServlet("/board/cmt") // ajax 용.
 public class BoardCmtServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -26,13 +26,15 @@ public class BoardCmtServlet extends HttpServlet {
 
         List<BoardCmtVO> list = BoardCmtDAO.selBoardCmtList(cmtParam);
 
-        Gson gson = new Gson();
+        Gson gson = new Gson(); // 객체(object)를 json 으로 봐꿈.
+        String json = gson.toJson(list);
 
         res.setContentType("application/json");
-        res.setCharacterEncoding("UTF-8");
+        res.setCharacterEncoding("UTF-8"); // 한글 깨짐 방지.
         PrintWriter out = res.getWriter();
-        out.print(gson.toJson(list));
-        out.flush();
+        out.print(json); //String json = gson.toJson(list); 를 쓰지 않을때
+                         // out.print(gson.toJson(list)); 로 하면 된다.
+        out.flush(); // 굳이 안 써도 된다.
     }
 
     @Override

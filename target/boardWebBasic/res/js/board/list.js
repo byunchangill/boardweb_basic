@@ -1,6 +1,6 @@
 function moveToDetail(iboard) {
     console.log('iboard : ' + iboard);
-    location.href="/board/detail?iboard=" + iboard;
+    location.href="/board/detail2?iboard=" + iboard;
 }
 var searchFromElem = document.querySelector('#searchFrom');
 console.log(searchFromElem);
