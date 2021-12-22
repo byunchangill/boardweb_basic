@@ -31,8 +31,7 @@
 
     <c:if test="${sessionScope.loginUser != null}">
         <div>
-        <form action="/board/cmt/reg" method="post">
-            <input type="hidden" name="iboard" value="${requestScope.data.iboard}">
+        <form id="cmtNewFrm">
             <input type="text" name ="ctnt" placeholder="댓글을 남깁시다." >
             <input type="submit" value="댓글 작성">
         </form>
@@ -53,4 +52,4 @@
         </form>
     </div>
 </div>
-<script src="/res/js/board/detail2.js?ver=2"></script>
+<script src="/res/js/board/detail2.js?ver=3"></script>

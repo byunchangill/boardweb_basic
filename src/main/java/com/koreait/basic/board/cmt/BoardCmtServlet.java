@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/board/cmt") // ajax 용.
 public class BoardCmtServlet extends HttpServlet {
@@ -53,9 +55,22 @@ public class BoardCmtServlet extends HttpServlet {
             case "upd":
                 result = BoardCmtDAO.upBoardCmt(entity); // writer, icmt, ctnt 값이 들어가 있다.
                 break;
+            case "del":
+                result = BoardCmtDAO.delBoardCmt(entity); // writer, icmt 값이 들어가 있다.
+                break;
+            case "ins":
+                result = BoardCmtDAO.insBoardCmt(entity); // result 값이 icmt 값을 가진다.
+                break;
         }
         res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8"); // 한글 깨질때. 정수값만 들고올때는 굳이 필요없다.
         PrintWriter out = res.getWriter();
-        out.print(String.format("{\"result\": %d}", result));
+//        out.print(String.format("{\"result\": %d}", result));
+
+        Map<String, Integer> map = new HashMap();
+        map.put("result", result);
+
+        String resultJson = gson.toJson(map);
+        out.println(resultJson);
     }
 }
