@@ -27,16 +27,15 @@
     <div>조회수: <c:out value="${requestScope.data.hit}"/></div>
     <div>작성자(이름): <c:out value="${requestScope.data.writerNm}"/></div>
     <div>등록일시: <c:out value="${requestScope.data.rdt}"/></div>
-    <div>좋아요 개수 : ${requestScope.data.cnt}</div>
+    <div>좋아요 개수 : ${requestScope.like}</div>
 
-    <c:if test="${sessionScope.loginUser != null}">
         <div>
-        <form id="cmtNewFrm">
-            <input type="text" name ="ctnt" placeholder="댓글을 남깁시다." >
-            <input type="submit" value="댓글 작성">
-        </form>
+            <form id="cmtNewFrm">
+                <input type="text" name ="ctnt" placeholder="댓글을 남깁시다." >
+                <input type="submit" value="댓글 작성">
+            </form>
         </div>
-    </c:if>
+
     <div id="cmtListContainer" data-iboard="${requestScope.data.iboard}"
                                data-loginuserpk="${sessionScope.loginUser.iuser}"></div> <!-- ajax 용. -->
 </div>
@@ -52,4 +51,4 @@
         </form>
     </div>
 </div>
-<script src="/res/js/board/detail2.js?ver=3"></script>
+<script src="/res/js/board/detail2.js?ver=4"></script>

@@ -7,6 +7,13 @@ newSubmitBtnElem.addEventListener('click', function (e) {
         alert('댓글 내용을 작성해 주세요.');
         return;
     }
+
+    var iuser = parseInt(cmtListContainerElem.dataset.loginuserpk);
+    if(!iuser) {
+        alert('로그인하고 작성해주세요..');
+        return;
+    }
+
     var param = {
         'iboard': cmtListContainerElem.dataset.iboard,
         'ctnt': cmtNewFrmElem.ctnt.value

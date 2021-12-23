@@ -22,21 +22,27 @@ public class BoardDetailServlet2 extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         int nohits = Utils.getParameterInt(req, "nohits");
         int iboard = Utils.getParameterInt(req, "iboard");
+
         BoardDTO dto = new BoardDTO();
         dto.setIboard(iboard);
 
+        int loginUserPk = Utils.getLoginUserPk(req);
         BoardVO data = BoardDAO.selBoardDetail(dto);
         req.setAttribute("data", data);
 
-        int loginUserPk = Utils.getLoginUserPk(req);
+        // 종아요 개수, 좋아요 확인
+        BoardHeartEntity bhParam = new BoardHeartEntity();
+        bhParam.setIboard(iboard);
+        bhParam.setIuser(loginUserPk);
+        int like = BoardHeartDAO.selHeartCount(bhParam);
+        req.setAttribute("like", like);
+
         if(loginUserPk > 0) {
-            BoardHeartEntity bhParam = new BoardHeartEntity();
-            bhParam.setIuser(loginUserPk);
-            bhParam.setIboard(iboard);
             req.setAttribute("isHeart", BoardHeartDAO.selIsHeart(bhParam));
         }
 
-        if(data.getWriter() != loginUserPk && nohits != 1) { // 로그인 안되어있으면 0, 로그인 되어있으면 pk값 넘어온다.
+        if(data.getWriter() != loginUserPk && nohits != 1) {
+            // 로그인 안되어있으면 0, 로그인 되어있으면 pk값 넘어온다.
             BoardDAO.updBoardHitUp(dto);
         }
 

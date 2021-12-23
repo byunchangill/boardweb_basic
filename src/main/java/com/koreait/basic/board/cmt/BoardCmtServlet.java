@@ -31,7 +31,6 @@ public class BoardCmtServlet extends HttpServlet {
 
         Gson gson = new Gson(); // 객체(object)를 json 으로 봐꿈.
         String json = gson.toJson(list);
-
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8"); // 한글 깨짐 방지.
         PrintWriter out = res.getWriter();
