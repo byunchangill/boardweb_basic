@@ -62,7 +62,7 @@
 
                    <tr class="record" onclick="moveToDetail(${item.iboard})">
                        <td>${item.iboard}</td>
-                       <td>${eachTitle}</td>
+                       <td>${eachTitle} </td>
                        <td>${item.hit}</td>
                        <td><div class="circular--img circular--size40">
                            <img src="/res/img/${pImg}">
